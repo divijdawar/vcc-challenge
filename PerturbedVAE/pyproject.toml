@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "perturbedvae-vcc"
+version = "0.2.0"
+description = "Sparse observation preparation and the PerturbedVAE core in tinygrad"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26", "scipy>=1.11", "h5py>=3.10"]
+
+[project.optional-dependencies]
+model = ["tinygrad @ git+https://github.com/tinygrad/tinygrad.git@9a0ed69465dd6841aeb45597efc34a9391d9874b"]
+
+[tool.setuptools]
+packages = ["vcc"]
+package-dir = {vcc = "src"}
+
+[tool.setuptools.data-files]
+"share/perturbedvae-vcc" = ["THIRD_PARTY_NOTICES.md"]
+"share/perturbedvae-vcc/licenses" = ["licenses/PerturbedVAE-MIT.txt"]

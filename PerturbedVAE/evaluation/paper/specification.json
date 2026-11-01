@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "suite": "paper",
+  "status": "specification_only",
+  "source": {
+    "paper": "https://arxiv.org/html/2605.19343v1",
+    "version": "2605.19343v1",
+    "checked_on": "2026-10-30",
+    "reference_code_revision_from_plan": "12cf29f4410464c15c142c245b171eed2cca4971",
+    "code_evaluation_parity_verified": false
+  },
+  "metric_catalog": {
+    "population_rmse": {
+      "direction": "minimize",
+      "definition": "sqrt(mean((predicted_condition_mean - observed_condition_mean)^2))",
+      "source_section": "H.2"
+    },
+    "population_regression_r2": {
+      "direction": "maximize",
+      "definition": "R-squared after regression between condition mean-expression vectors",
+      "source_section": "H.2",
+      "regression_details_verified_against_code": false
+    },
+    "latent_mcc": {
+      "direction": "maximize",
+      "definition": "Mean absolute Pearson correlation after optimal one-to-one latent matching",
+      "source_section": "H.1",
+      "requires_ground_truth_latents": true
+    },
+    "latent_block_regression_r2": {
+      "direction": "maximize",
+      "source_section": "H.1",
+      "requires_ground_truth_latents": true,
+      "regressor_and_fit_protocol": null
+    },
+    "response_l2": {
+      "direction": "minimize",
+      "source_section": "K",
+      "expression_scale_and_reduction": null
+    },
+    "delta_pearson": {
+      "direction": "maximize",
+      "source_section": "K",
+      "exact_response_and_control_definition": null
+    },
+    "cell_rmse": {
+      "direction": "minimize",
+      "source_section": "K",
+      "cell_pairing_protocol": null
+    },
+    "cell_r2_sanity_check": {
+      "direction": "maximize",
+      "source_section": "K",
+      "cell_pairing_and_reduction": null
+    },
+    "mmd": {
+      "direction": "minimize",
+      "source_section": "L, Table 11",
+      "kernel_bandwidth_estimator_and_evaluation_space": null
+    }
+  },
+  "protocols": {
+    "norman2019_population": {
+      "source_section": "H.2; Section 5.3",
+      "metrics": ["population_rmse", "population_regression_r2"],
+      "reported_gene_count": 5000,
+      "training": "Controls and single-gene conditions",
+      "single_gene_evaluation": {
+        "minimum_condition_cells_exclusive": 800,
+        "held_out_real_cells_per_condition": 96,
+        "generated_cells_per_condition": 96
+      },
+      "double_gene_evaluation": "Held-out combinations",
+      "exact_condition_ids_split_seeds_and_preprocessing": null
+    },
+    "top20_de_readout": {
+      "source_section": "J.2",
+      "metrics": ["population_rmse", "population_regression_r2"],
+      "readout_gene_count": 20,
+      "de_selection_method_and_metric_reduction": null
+    },
+    "replogle2022_iid": {
+      "source_section": "K",
+      "metrics": ["response_l2", "delta_pearson", "cell_rmse", "cell_r2_sanity_check"],
+      "task": "Single-gene i.i.d. evaluation",
+      "exact_dataset_adapter_and_splits": null
+    },
+    "synthetic_latent_recovery": {
+      "source_section": "H.1; Table 1",
+      "metrics": ["latent_mcc", "latent_block_regression_r2"],
+      "requires_ground_truth_latents": true
+    },
+    "mmd_alignment_ablation": {
+      "source_section": "L, Table 11",
+      "metrics": ["population_rmse", "population_regression_r2", "mmd"],
+      "exact_metric_reductions": null
+    }
+  },
+  "implementation_policy": {
+    "unresolved_fields": "Fail explicitly before a reproduction run; do not fill by guesswork",
+    "expression_scale": "Require a verified per-protocol preprocessing manifest",
+    "cell_matching": "Require a documented matching protocol for any cell-level metric",
+    "ground_truth_de_selection": "Scoring readout only; exclude from model fitting",
+    "project_adaptations": "Label separately from paper reproduction"
+  }
+}

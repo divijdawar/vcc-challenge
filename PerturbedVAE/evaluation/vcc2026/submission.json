@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "suite": "vcc2026",
+  "status": "specification_only",
+  "source": "https://vcc-cli-wiki.virtualcellchallenge.org/#submission-requirements-2026",
+  "checked_on": "2026-10-30",
+  "release": {
+    "context_source": "manifest.json",
+    "target_source": "pert_counts.csv",
+    "gene_order_source": "gene_names.csv",
+    "context_count": 3,
+    "target_count_per_context": 300,
+    "gene_count": 18533,
+    "validation_contexts_at_check_date": ["A", "B", "C"],
+    "final_contexts_at_check_date": ["D", "E", "F"],
+    "final_dataset_name": "controls-final",
+    "final_archive_name": "vcc_2026_controls_final.zip",
+    "final_targets": "Read the final bundle; do not reuse the validation list",
+    "context_identity": "Preserve labels attached to source controls"
+  },
+  "prediction_contract": {
+    "h5ad_files": 1,
+    "upload_format": ".vcc",
+    "obs_columns": ["target_gene", "context"],
+    "target_labels": "Gene symbols",
+    "exact_cells_per_target_per_context": 400,
+    "expected_total_prediction_rows": 360000,
+    "include_non_targeting_rows": false,
+    "counts": {"finite": true, "nonnegative": true, "integer_valued": true},
+    "max_counts_per_cell": 1000000,
+    "max_total_cells": 400000,
+    "max_stored_entries": 4750000000,
+    "storage": "Sparse; explicitly stored zeros also count toward the entry cap",
+    "gene_axis": "Exact release gene set; export in release order",
+    "row_ids": "Unique, deterministic project-generated identifiers"
+  },
+  "validation": {
+    "official_command": "vcc prep",
+    "validation_only_flag": "--dry-run",
+    "minimum_final_cli_version": "0.3.0",
+    "requires_reference_files": ["gene_names.csv", "pert_counts.csv", "manifest.json"],
+    "local_checks": ["shape", "context_target_counts", "gene_axis", "count_values", "stored_entries", "row_ids"],
+    "local_accuracy_scoring": "Unavailable for final release without response ground truth",
+    "automatic_submission": false
+  }
+}
